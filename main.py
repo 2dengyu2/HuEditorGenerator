@@ -3,6 +3,8 @@
 
 import random
 import readJSON
+import sys
+import getopt
 
 data = readJSON.read('data.json')
 quote_list = data['famous']  # 主要取自老胡经典的话
@@ -60,13 +62,50 @@ def get_newline():
     return _text
 
 
-def generate(title: str = '默认标题', repeat_time: int = 5):
+def generate(argv):
     """
     生成文本
-    :param title: 标题
-    :param repeat_time: 重复次数
+    :param argv: 参数表
     :return: 生成的文本
     """
+    title = '此事'
+    repeat_time = 10
+    global quotes_percent
+    global new_paragraph_percent
+    global indent
+    hint = 'HuEditorGenerator\n\t -t <title:标题>\n\t -n <repeat_time:重复次数>默认10\n\t ' \
+           '-q <quotes_percent:名人名言概率(百分比)>默认10\n\t -p <new_paragraph_percent:换行概率(百分比)>默认10\n\t ' \
+           '-i <indent_type:换行后的缩进符类型[0:制表符, 1:空两格, 2:空四格]>默认0'
+    try:
+        opts, args = getopt.getopt(argv, "ht:n:q:p:i:",
+                                   ["title=", "repeat_time=", "quotes_percent=", "new_paragraph_percent=",
+                                    "indent_type="])
+    except getopt.GetoptError:
+        print(hint)
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print(hint)
+            sys.exit()
+        elif opt in ("-t", "--title"):
+            title = arg
+        elif opt in ("-n", "--repeat_time"):
+            repeat_time = int(arg)
+        elif opt in ("-q", "--quotes_percent"):
+            quotes_percent = int(arg)
+        elif opt in ("-p", "--new_paragraph_percent"):
+            new_paragraph_percent = int(arg)
+        elif opt in ("-i", "--indent_type"):
+            if opt == '0':
+                indent = '\t'
+            elif opt == '1':
+                indent = '  '
+            elif opt == '2':
+                indent = '    '
+            else:
+                raise getopt.GetoptError(f'indent_type可选值为[0:制表符, 1:空两格, 2:空四格]，输入值为：{opt}')
+            title = arg
+
     _new_paragraph_percent = quotes_percent + new_paragraph_percent
     _quotes_percent = quotes_percent
     _article = indent
@@ -92,7 +131,5 @@ def generate(title: str = '默认标题', repeat_time: int = 5):
 
 
 if __name__ == '__main__':
-    s_title = input('请输入文章主题：')
-    i_repeat_time = input('生成次数：')
-    s_article = generate(s_title, int(i_repeat_time))
+    s_article = generate(sys.argv[1:])
     print(s_article)
