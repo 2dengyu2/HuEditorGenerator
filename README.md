@@ -1,5 +1,33 @@
 # HuEditorGenerator
 ## 胡编生成器
+
+### 使用方式
+- 直接运行
+
+```
+python main.py
+```
+
+- 可选参数表
+
+```
+HuEditorGenerator
+         -t <title:标题>
+         -n <repeat_time:重复次数>默认10
+         -q <quotes_percent:名人名言概率(百分比)>默认10
+         -p <new_paragraph_percent:换行概率(百分比)>默认10
+         -i <indent_type:换行后的缩进符类型[0:制表符, 1:空两格, 2:空四格]>默认0
+```
+- 例如设定使用名言概率为30%
+```
+python main.py -t标题 -q30
+```
+### 帮助文档
+
+```
+python main.py -h
+```
+
 ### 💡仅供测试使用，请勿将生成的文章用于正规用途。请先阅读完毕readme.md和[about.html](https://mediatoreditor.github.io/hugenerator/about.html)，然后再决定是否使用。
 
 🎯用于生产胡式评论，这样一有新事情发生，第一时间生成评论发布，可以马上抢占舆论高地，赢取伟大胜利。
