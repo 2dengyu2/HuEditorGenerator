@@ -10,7 +10,7 @@ import re
 pattern = re.compile(r'.json$')
 
 
-def 读JSON文件(file_name=""):
+def read(file_name=''):
     if pattern.search(file_name):
         with open(file_name, mode='r', encoding="utf-8") as file:
             return json.loads(file.read())
